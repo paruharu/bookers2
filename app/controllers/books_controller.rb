@@ -1,24 +1,29 @@
 class BooksController < ApplicationController
+  
+  before_action :login_check, {only: [:edit]}
     
-  def new
-   @book = Book.new 
-  end
-
   def create
     # １. データを新規登録するためのインスタンス作成
-    book = Book.new(book_params)
+    @book = Book.new(book_params)
     # user.idのカラムを手動で入力
-    book.user_id = current_user.id
+    @book.user_id = current_user.id
     # ２. データをデータベースに保存するためのsaveメソッド実行
-    book.save
-    redirect_to book_path(book.id)
+    if @book.save
+      flash[:notice] = "You have created book successfully."
+      redirect_to book_path(@book.id)
+    else
+      @user = current_user
+      @books = Book.all
+      render :index
+    end
   end
 
   def index
     @books = Book.all
     @users = User.all
     @user = current_user
-    
+    @book = Book.new
+
   end
 
   def show
@@ -41,8 +46,12 @@ class BooksController < ApplicationController
   
   def update
     book = Book.find(params[:id])
-    book.update(book_params)
-    redirect_to book_path(book.id)
+    if book.update(book_params)
+       flash[:notice] = "You have updated book successfully."
+       redirect_to book_path(book.id)
+    else
+      render :new
+    end
   end
   
   private
