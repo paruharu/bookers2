@@ -27,14 +27,14 @@ class UsersController < ApplicationController
       flash[:notice] = "You have updated user successfully."
       redirect_to user_path(@user.id)
     else
-      render :new
+      render :edit
     end
   end
   
   private
   # ストロングパラメータ
   def user_params
-    params.require(:user).permit(:profile_image_id, :introduction, :name)
+    params.require(:user).permit(:profile_image, :introduction, :name)
   end
   
 end

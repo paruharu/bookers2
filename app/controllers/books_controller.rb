@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   
-  before_action :login_check, {only: [:edit]}
+  # before_action :login_check, {only: [:edit]}
     
   def create
     # １. データを新規登録するためのインスタンス作成
@@ -42,6 +42,9 @@ class BooksController < ApplicationController
   
   def edit
     @book = Book.find(params[:id])
+      unless @book.user == current_user
+      redirect_to  book_path
+      end
   end
   
   def update

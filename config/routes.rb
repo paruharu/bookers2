@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
   devise_for :users
-  root to: 'homes#top'
-  get '/home/about', to: 'homes#about'
+  root to: 'home#top'
+  get '/home/about', to: 'home#about'
   patch '/users/:id', to: 'users#update' 
   get 'books/:id/edit' => 'books#edit', as: 'edit_book'
   patch 'books/:id' => 'books#update', as: 'update_book'
