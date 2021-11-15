@@ -8,6 +8,7 @@ class BooksController < ApplicationController
     # user.idのカラムを手動で入力
     @book.user_id = current_user.id
     # ２. データをデータベースに保存するためのsaveメソッド実行
+
     if @book.save
       flash[:notice] = "You have created book successfully."
       redirect_to book_path(@book.id)
@@ -28,8 +29,9 @@ class BooksController < ApplicationController
 
   def show
     @books = Book.all
-    @book = Book.find(params[:id])
-    @user = @book.user
+    @booka = Book.find(params[:id])
+    @user = @booka.user
+    @book = Book.new
   end
   
 #   def edit end
@@ -48,12 +50,12 @@ class BooksController < ApplicationController
   end
   
   def update
-    book = Book.find(params[:id])
-    if book.update(book_params)
+    @book = Book.find(params[:id])
+    if @book.update(book_params)
        flash[:notice] = "You have updated book successfully."
-       redirect_to book_path(book.id)
+       redirect_to book_path(@book.id)
     else
-      render :new
+      render :edit
     end
   end
   
